@@ -3,7 +3,7 @@ import type { AWS } from '@serverless/typescript';
 const serverlessConfiguration: AWS = {
   service: 's3uploader',
   frameworkVersion: '2',
-  plugins: ['serverless-esbuild', 'serverless-dynamodb-local','serverless-offline'],
+  plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
