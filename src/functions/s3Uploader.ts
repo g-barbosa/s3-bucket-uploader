@@ -1,5 +1,6 @@
 import { Telegraf } from 'telegraf'
 import { S3 } from 'aws-sdk'
+import request from 'request-promise-native'
 
 export const handler = async (event) => {
   let body = JSON.parse(event.body)
@@ -8,18 +9,30 @@ export const handler = async (event) => {
   const s3 = new S3()
 
   bot.on('photo', async (ctx) => {
-    const { file_id: fileId } = ctx.update.message.photo[0];
+    const photos = ctx.update.message.photo;
+    const { file_id: fileId } = photos[photos.length - 1];
     const fileUrl = await ctx.telegram.getFileLink(fileId);
-    console.log(fileUrl);
+
     ctx.reply(fileUrl.toString());
 
-    /*
-    TODO: receber o arquivo pelo telegram e salvar no s3
-    */
-    //await s3.putObject()
+    const filename = fileId + `.${fileUrl.toString().slice(-3)}`
+
+    var options = {
+      uri: fileUrl.toString(),
+      encoding: null
+    }
+
+    const body = await request(options);
+
+    await s3.upload({
+      Bucket: process.env.BUCKET_NAME,
+      Key: filename,
+      ACL: 'public-read',
+      Body: body
+    }).promise()
   })
 
   await bot.handleUpdate(body)
 
-  return {statusCode: 200, body: ''}
+  return {statusCode: 200, body: 'upload do arquivo feito com sucesso'}
 }
