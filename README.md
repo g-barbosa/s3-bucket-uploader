@@ -2,6 +2,8 @@
 
 ## Aplicação serverless que recebe arquivos de um bot do telegram e os salva em um bucket S3
 
+![Arquitetura](https://github.com/g-barbosa/s3-bucket-uploader/blob/assets/sample.jpg)
+
 ## Ambiente
 #### Dependências
 Rode o comando abaixo para instalar todas as dependências necessárias deste projeto.
