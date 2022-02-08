@@ -22,7 +22,7 @@ export const handler = async (event) => {
 
     const body = await request(options);
 
-    ctx.reply('Fazendo upload da imagem...');
+    ctx.reply('⌛ Fazendo upload da imagem...');
 
     await s3.upload({
       Bucket: process.env.BUCKET_NAME,
