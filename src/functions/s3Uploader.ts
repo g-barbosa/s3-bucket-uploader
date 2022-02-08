@@ -13,8 +13,6 @@ export const handler = async (event) => {
     const { file_id: fileId } = photos[photos.length - 1];
     const fileUrl = await ctx.telegram.getFileLink(fileId);
 
-    ctx.reply(fileUrl.toString());
-
     const filename = fileId + `.${fileUrl.toString().slice(-3)}`
 
     var options = {
@@ -23,6 +21,8 @@ export const handler = async (event) => {
     }
 
     const body = await request(options);
+
+    ctx.reply('Fazendo upload da imagem...');
 
     await s3.upload({
       Bucket: process.env.BUCKET_NAME,
